@@ -79,9 +79,9 @@ def main():
 
     print("Time taken to read data:", (end_data-start_data))
 
-    # test_back(quizzes, solutions)
-    # test_MRV(quizzes, solutions)
-    test_PNP(quizzes, solutions)
+    test_back(quizzes, solutions)
+    test_MRV(quizzes, solutions)
+    # test_PNP(quizzes, solutions)
 
 
 if __name__ == '__main__':
