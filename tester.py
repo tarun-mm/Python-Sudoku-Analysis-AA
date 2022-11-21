@@ -61,15 +61,14 @@ def test_PNP(qizs, sols):
 
     start_test = time.time()
     c = 0
-    for i in qizs[:N]:
+    for i in range(N):
         if c%100 == 0:
             print(c)
-        print(sudoku_PNP.sudoku_solver(i))
-        print(sudoku_PNP.sudoku_solver(i) == sols[0])
-        c += 1
+        if np.array_equal(sudoku_PNP.sudoku_solver(qizs[i]), sols[i]):
+            c += 1
     end_test = time.time()
 
-    print("Percentage of sudokus solved: ", (float(c)*100/(N-1)), "%", sep="")
+    print("Percentage of sudokus solved: ", (float(c)*100/N), "%", sep="")
     print("Time taken to test using PNP:", (end_test-start_test))
 
 
@@ -80,7 +79,9 @@ def main():
 
     print("Time taken to read data:", (end_data-start_data))
 
-    test_back(quizzes, solutions)
+    # test_back(quizzes, solutions)
+    # test_MRV(quizzes, solutions)
+    test_PNP(quizzes, solutions)
 
 
 if __name__ == '__main__':

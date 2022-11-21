@@ -1,3 +1,6 @@
+import numpy as np
+import copy
+
 def basic(sudoku):
     temp = []
     for i in range(9):
@@ -16,40 +19,40 @@ def basic(sudoku):
         for j in range(9):
             sudoku[j][i] = temp[j]
 
-    checkBox(0, 0)
-    checkBox(0, 3)
-    checkBox(0, 6)
-    checkBox(3, 0)
-    checkBox(3, 3)
-    checkBox(3, 6)
-    checkBox(6, 0)
-    checkBox(6, 3)
-    checkBox(6, 6)
+    checkBox(sudoku, 0, 0)
+    checkBox(sudoku, 0, 3)
+    checkBox(sudoku, 0, 6)
+    checkBox(sudoku, 3, 0)
+    checkBox(sudoku, 3, 3)
+    checkBox(sudoku, 3, 6)
+    checkBox(sudoku, 6, 0)
+    checkBox(sudoku, 6, 3)
+    checkBox(sudoku, 6, 6)
 
 
 def checkArray(row):
-    i = 0
+    cnt = 0
     l = [i for i in range(1, 10)]
 
     for j in range(len(row)):
         if row[j] == 0:
-            i += 1
+            cnt += 1
         else:
             l.remove(row[j])
-        if i > 1:
+        if cnt > 1:
             break
 
     if len(l) == 1:
-        row[row.index[0]] = l[0]
+        row[row.index(0)] = l[0]
 
     return row
 
 
 def checkBox(sudoku, row, col):
-    l = getBox(row, col)
+    l = getBox(sudoku, row, col)
     if len(l) == 1:
-        row = int((row/3)*3)
-        col = int((col/3)*3)
+        row = (int(row/3)*3)
+        col = (int(col/3)*3)
 
         for r in range(3):
             for c in range(3):
@@ -59,12 +62,12 @@ def checkBox(sudoku, row, col):
 
 def getBox(sudoku, row, col):
     l = [i for i in range(1, 10)]
-    row = int((row/3)*3)
-    col = int((col/3)*3)
+    row = (int(row/3)*3)
+    col = (int(col/3)*3)
 
     for r in range(3):
         for c in range(3):
-            if sudoku[row+r][col+c] != 0 and sudoku[row+r][col+c] in l:
+            if sudoku[row+r][col+c] != 0:
                 l.remove(sudoku[row+r][col+c])
     return l
 
@@ -73,7 +76,7 @@ def getRow(sudoku, row):
     l = [i for i in range(1, 10)]
 
     for col in range(9):
-        if sudoku[row][col] != 0 and sudoku[row][col] in l:
+        if sudoku[row][col] != 0:
             l.remove(sudoku[row][col])
     return l
 
@@ -82,7 +85,7 @@ def getCol(sudoku, col):
     l = [i for i in range(1, 10)]
 
     for row in range(9):
-        if sudoku[row][col] != 0 and sudoku[row][col] in l:
+        if sudoku[row][col] != 0:
             l.remove(sudoku[row][col])
     return l
 
@@ -112,16 +115,15 @@ def complete(sudoku):
 
 
 def sudoku_solver(sudoku):
-    a = sudoku
-
-    l = []
-
+    a = copy.deepcopy(sudoku)
     for h in range(10):
+        print("h: ", h)
         if complete(sudoku):
             break
-        tmp = a
-        singleNaked(sudoku)
-        if tmp == a:
+        tmp = copy.deepcopy(a)
+        singleNaked(a)
+        # basic(sudoku)
+        if np.array_equal(tmp, a):
             break
     
-    return sudoku
+    return a
